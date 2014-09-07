@@ -49,6 +49,6 @@ TEST(Dimensions2, ConvertAssignment2) {
   geom::Dimensions2i d2;
   d2 = d1;
   EXPECT_EQ(static_cast<int>(d1.width), d2.width);
-  EXPECT_EQ(static_cast<int>(d1.width), d2.width);
+  EXPECT_EQ(static_cast<int>(d1.height), d2.height);
 }
 
