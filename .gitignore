@@ -1,0 +1,6 @@
+
+# Binary Object Files
+*.o
+
+# Test binary
+test
