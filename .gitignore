@@ -4,3 +4,6 @@
 
 # Test binary
 test
+
+# Emacs temp files
+*~
