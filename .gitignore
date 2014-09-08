@@ -7,3 +7,10 @@ test
 
 # Emacs temp files
 *~
+
+# Documentation Files
+html/*
+latex/*
+
+# OS X cache
+.DS_Store

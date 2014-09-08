@@ -8,13 +8,17 @@ LINK_FLAGS :=
 
 TEST_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard ${TESTS}/*.cpp))
 
-.PHONEY: all tests clean
+.PHONEY: all tests clean documentation
 
 all: tests
 tests: test
 clean:
 	rm -rf ${TESTS}/*.o
 	rm -rf ./test
+	rm -rf ./html/ ./latex
+
+documentation:
+	doxygen
 
 test: ${TEST_OBJECTS}
 	${CXX} ${LINK_FLAGS} -o ./test ${TEST_OBJECTS} -lgtest -lgtest_main
