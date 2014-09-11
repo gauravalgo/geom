@@ -92,6 +92,15 @@ namespace geom {
       return *this;
     }
     
+    /**
+     * \brief Assign the result of adding two vectors.
+     * \arg \c rhs The vector to add to this \c Vector2 object
+     * \return A reference to the \c Vector2 object being assigned to
+     */
+    Vector2<Scalar> & operator+=(const Vector2<Scalar> &rhs) {
+      return *this = *this + rhs;
+    }
+    
     Scalar x; /**< The x component of the \c Vector2 object */
     Scalar y; /**< The y component of the \c Vector2 object */
   };
@@ -100,6 +109,21 @@ namespace geom {
   typedef Vector2<std::uint32_t> Vec2u;
   typedef Vector2<float> Vec2f;
   typedef Vector2<double> Vec2d;
+  
+  /**
+   * \brief Add two \c Vector2 objects together and return the result.
+   * \arg \c lhs The operand on the left hand side of the addition symbol
+   * \arg \c rhs The operand on the right hand side of the addition symbol
+   * \return A new \c Vector2 object that contains the result of adding lhs and
+   * rhs
+   */
+  template <typename RhsType, typename LhsType,
+	    typename Result = typename std::common_type<RhsType,LhsType>::type>
+  Vector2<Result> operator+(const Vector2<LhsType> &lhs,
+			    const Vector2<RhsType> &rhs)
+  {
+    return Vector2<Result>(lhs.x + rhs.x, lhs.y + rhs.y);
+  }
 }
 
 #endif

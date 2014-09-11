@@ -60,3 +60,39 @@ TEST(Vector3, ConvertAssignment2) {
   EXPECT_EQ(static_cast<double>(v1.y), v2.y);
   EXPECT_EQ(static_cast<double>(v1.z), v2.z);
 }
+
+TEST(Vector3, Addition1) {
+  geom::Vec3i v1(1,2,3);
+  geom::Vec3i v2(0,0,0);
+  geom::Vec3i v3(v1 + v2);
+  EXPECT_EQ(v3.x, 1);
+  EXPECT_EQ(v3.y, 2);
+  EXPECT_EQ(v3.z, 3);
+}
+
+TEST(Vector3, Addition2) {
+  geom::Vec3i v1(1,2,3);
+  geom::Vec3i v2(-1, -2, -3);
+  geom::Vec3i v3(v1 + v2);
+  EXPECT_EQ(v3.x, 0);
+  EXPECT_EQ(v3.y, 0);
+  EXPECT_EQ(v3.z, 0);
+}
+
+TEST(Vector3, Addition3) {
+  geom::Vec3i v1(1,1,1);
+  geom::Vec3i v2(2,3,4);
+  geom::Vec3i v3(v1 + v2);
+  EXPECT_EQ(v3.x, 3);
+  EXPECT_EQ(v3.y, 4);
+  EXPECT_EQ(v3.z, 5);
+}
+
+TEST(Vector3, AdditionAssignment) {
+  geom::Vec3i v1(1,2,4);
+  geom::Vec3i v2(2,1,-1);
+  v1 += v2;
+  EXPECT_EQ(v1.x, 3);
+  EXPECT_EQ(v1.y, 3);
+  EXPECT_EQ(v1.z, 3);
+}

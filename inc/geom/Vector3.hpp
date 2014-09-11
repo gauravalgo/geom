@@ -5,8 +5,7 @@
  * \brief Definition header for Vector3 structure
  */
 
-/**
- * Copyright (C) 2014 Troy Varney
+/* Copyright (C) 2014 Troy Varney
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to
@@ -98,6 +97,16 @@ namespace geom {
       return *this;
     }
     
+    /**
+     * \brief Assign the result of adding two vectors.
+     * \arg \c rhs The vector to add to this \c Vector3 object
+     * \return A reference to the \c Vector3 object being assigned to
+     */
+    Vector3<Scalar> & operator+=(const Vector3<Scalar> &rhs) {
+      return *this = *this + rhs;
+    }
+
+    
     Scalar x; /**< The x component of the \c Vector3 object */
     Scalar y; /**< The y component of the \c Vector3 object */
     Scalar z; /**< The z component of the \c Vector3 object */
@@ -107,6 +116,21 @@ namespace geom {
   typedef Vector3<std::uint32_t> Vec3u;
   typedef Vector3<float> Vec3f;
   typedef Vector3<double> Vec3d;
+  
+  /**
+   * \brief Add two \c Vector3 objects together and return the result.
+   * \arg \c lhs The operand on the left hand side of the addition symbol
+   * \arg \c rhs The operand on the right hand side of the addition symbol
+   * \return A new \c Vector3 object that contains the result of adding lhs and
+   * rhs
+   */
+  template <typename RhsType, typename LhsType,
+	    typename Result = typename std::common_type<RhsType,LhsType>::type>
+  Vector3<Result> operator+(const Vector3<LhsType> &lhs,
+			    const Vector3<RhsType> &rhs)
+  {
+    return Vector3<Result>(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z);
+  }
 }
 
 #endif

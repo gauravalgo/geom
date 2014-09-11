@@ -98,6 +98,15 @@ namespace geom {
       return *this;
     }
     
+    /**
+     * \brief Assign the result of adding two vectors.
+     * \arg \c rhs The vector to add to this \c Vector4 object
+     * \return A reference to the \c Vector4 object being assigned to
+     */
+    Vector4<Scalar> & operator+=(const Vector4<Scalar> &rhs) {
+      return *this = *this + rhs;
+    }
+    
     Scalar x; /**< The x component of the \c Vector4 object */
     Scalar y; /**< The y component of the \c Vector4 object */
     Scalar z; /**< The z component of the \c Vector4 object */
@@ -108,6 +117,23 @@ namespace geom {
   typedef Vector4<std::uint32_t> Vec4u;
   typedef Vector4<float> Vec4f;
   typedef Vector4<double> Vec4d;
+  
+  /**
+   * \brief Add two \c Vector4 objects together and return the result.
+   * \arg \c lhs The operand on the left hand side of the addition symbol
+   * \arg \c rhs The operand on the right hand side of the addition symbol
+   * \return A new \c Vector4 object that contains the result of adding lhs and
+   * rhs
+   */
+  template <typename RhsType, typename LhsType,
+	    typename Result = typename std::common_type<RhsType,LhsType>::type>
+  Vector4<Result> operator+(const Vector4<LhsType> &lhs,
+			    const Vector4<RhsType> &rhs)
+  {
+    return Vector4<Result>(lhs.x + rhs.x, lhs.y + rhs.y, lhs.z + rhs.z,
+			   lhs.w + rhs.w);
+  }
+
 }
 
 #endif
