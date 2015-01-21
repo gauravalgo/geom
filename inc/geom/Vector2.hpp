@@ -92,6 +92,14 @@ namespace geom {
       return *this;
     }
     
+		/**
+		 * \breif Get a negated copy of this vector.
+		 * \return A new \c Vector2 object with components multiplied by -1
+		 */
+		Vector2<Scalar> operator-() {
+			return Vector2<Scalar>(-x, -y);
+		}
+		
     /**
      * \brief Assign the result of adding two vectors.
      * \arg \c rhs The vector to add to this \c Vector2 object
@@ -100,6 +108,33 @@ namespace geom {
     Vector2<Scalar> & operator+=(const Vector2<Scalar> &rhs) {
       return *this = *this + rhs;
     }
+		
+		/**
+		 * \brief Assign the result of subtracting two vectors.
+		 * \arg \c rhs The vector to subtract from this \c Vector2 object
+		 * \return A reference to the \c Vector2 object being assigned to
+		 */
+		Vector2<Scalar> & operator-=(const Vector2<Scalar> &rhs) {
+			return *this = *this - rhs;
+		}
+		
+		/**
+		 * \brief Assign the result of multiplying two vectors.
+		 * \arg \c rhs The vector to muliply this \c Vector2 object by
+		 * \return A reference to the \c Vector2 object being assigned to
+		 */
+		Vector2<Scalar> & operator*=(const Vector2<Scalar> &rhs) {
+			return *this = *this * rhs;
+		}
+		
+		/**
+		 * \breif Assign the result of dividing two vectors.
+		 * \arg \c rhs The vector to divide this \c Vector2 object by
+		 * \return A reference to the \c Vector2 object being assigned to
+		 */
+		Vector2<Scalar> & operator/=(const Vector2<Scalar> &rhs) {
+			return *this = *this / rhs;
+		}
     
     Scalar x; /**< The x component of the \c Vector2 object */
     Scalar y; /**< The y component of the \c Vector2 object */
@@ -123,6 +158,51 @@ namespace geom {
 			    const Vector2<RhsType> &rhs)
   {
     return Vector2<Result>(lhs.x + rhs.x, lhs.y + rhs.y);
+  }
+	
+	/**
+	 * \breif Subtract two \c Vector2 objects and return the result.
+	 * \arg \c lhs The operand on the left hand side of the expression.
+	 * \arg \c rhs The operand on the right hand side of the expression.
+	 * \return A new \c Vector2 object that contains the results of subtracting
+	 * rhs from lhs
+	 */
+  template <typename RhsType, typename LhsType,
+            typename Result = typename std::common_type<RhsType,LhsType>::type>
+  Vector2<Result> operator-(const Vector2<LhsType> &lhs,
+                            const Vector2<RhsType> &rhs)
+  {
+    return Vector2<Result>(lhs.x - rhs.x, lhs.y - rhs.y);
+  }
+  
+	/**
+	 * \brief Piecewise multiply two \c Vector2 objects and return the result.
+	 * \arg \c lhs The operand on the left hand side of the expression
+	 * \arg \c rhs The operand on the right hand side of the expression
+	 * \return A new \c Vector2 object that contains the results of muliplying
+	 * lhs by rhs.
+	 */
+  template <typename RhsType, typename LhsType,
+            typename Result = typename std::common_type<RhsType,LhsType>::type>
+  Vector2<Result> operator*(const Vector2<LhsType> &lhs,
+                            const Vector2<RhsType> &rhs)
+  {
+    return Vector2<Result>(lhs.x * rhs.x, lhs.y * rhs.y);
+  }
+  
+	/**
+	 * \breif Piecewise divide two \c Vector2 objects and return the result.
+	 * \arg \c lhs The operand on the left hand side of the expression
+	 * \arg \c rhs The operand on the right hand side of the expression
+	 * \return A new \c Vector2 object that contains the results of dividing lhs
+	 * by rhs.
+	 */
+  template <typename RhsType, typename LhsType,
+            typename Result = typename std::common_type<RhsType,LhsType>::type>
+  Vector2<Result> operator/(const Vector2<LhsType> &lhs,
+                            const Vector2<RhsType> &rhs)
+  {
+    return Vector2<Result>(lhs.x / rhs.x, lhs.y / rhs.y);
   }
 }
 
