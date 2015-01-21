@@ -105,7 +105,8 @@ namespace geom {
      * \arg \c rhs The vector to add to this \c Vector2 object
      * \return A reference to the \c Vector2 object being assigned to
      */
-    Vector2<Scalar> & operator+=(const Vector2<Scalar> &rhs) {
+		template <typename RhsType>
+    Vector2<Scalar> & operator+=(const Vector2<RhsType> &rhs) {
       return *this = *this + rhs;
     }
 		
@@ -114,7 +115,8 @@ namespace geom {
 		 * \arg \c rhs The vector to subtract from this \c Vector2 object
 		 * \return A reference to the \c Vector2 object being assigned to
 		 */
-		Vector2<Scalar> & operator-=(const Vector2<Scalar> &rhs) {
+		template <typename RhsType>
+		Vector2<Scalar> & operator-=(const Vector2<RhsType> &rhs) {
 			return *this = *this - rhs;
 		}
 		
@@ -123,7 +125,8 @@ namespace geom {
 		 * \arg \c rhs The vector to muliply this \c Vector2 object by
 		 * \return A reference to the \c Vector2 object being assigned to
 		 */
-		Vector2<Scalar> & operator*=(const Vector2<Scalar> &rhs) {
+		template <typename RhsType>
+		Vector2<Scalar> & operator*=(const Vector2<RhsType> &rhs) {
 			return *this = *this * rhs;
 		}
 		
@@ -132,7 +135,28 @@ namespace geom {
 		 * \arg \c rhs The vector to divide this \c Vector2 object by
 		 * \return A reference to the \c Vector2 object being assigned to
 		 */
-		Vector2<Scalar> & operator/=(const Vector2<Scalar> &rhs) {
+		template <typename RhsType>
+		Vector2<Scalar> & operator/=(const Vector2<RhsType> &rhs) {
+			return *this = *this / rhs;
+		}
+		
+		/**
+		 * \breif Assign the result of multiplying a vector by a scalar.
+		 * \arg \c rhs The scalar to multiply this vector by
+		 * \return A reference to the \c Vector2 object being assigned to
+		 */
+		template <typename RhsType>
+		Vector2<Scalar> & operator*=(const RhsType &rhs) {
+			return *this = *this * rhs;
+		}
+		
+		/**
+		 * \brief Assign the result of dividing a vector by a scalar.
+		 * \arg \c rhs The scalar to divide this vector by
+		 * \return A reference to the \c Vector2 object being assigned to
+		 */
+		template <typename RhsType>
+		Vector2<Scalar> & operator/=(const RhsType &rhs) {
 			return *this = *this / rhs;
 		}
     
@@ -204,6 +228,47 @@ namespace geom {
   {
     return Vector2<Result>(lhs.x / rhs.x, lhs.y / rhs.y);
   }
+	
+	/**
+	 * \brief Scalar multiplication of a \c Vector2 object.
+	 * \arg \c lhs The \c Vector2 object to multiply.
+	 * \arg \c rhs The scalar to multiply the \c Vector2 object by.
+	 * \return A new \c Vector2 object that is the result of the scalar
+	 * multiplication.
+	 */
+	template <typename RhsType, typename LhsType,
+						typename Result = typename std::common_type<RhsType,LhsType>::type>
+	Vector2<Result> operator*(const Vector2<LhsType> &lhs, const RhsType &rhs)
+	{
+		return Vector2<Result>(lhs.x * rhs, lhs.y * rhs);
+	}
+	
+	/**
+	 * \breif Scalar mulitplication of a \c Vector2 object.
+	 * \arg \c lhs The scalar to multiply the \c Vector2 object by.
+	 * \arg \c rhs The \c Vector2 object to multiply.
+	 * \return A new \c Vector2 object that is the result of the scalar
+	 * multiplication.
+	 */
+	template <typename RhsType, typename LhsType,
+						typename Result = typename std::common_type<RhsType,LhsType>::type>
+	Vector2<Result> operator*(const LhsType &lhs, const Vector2<RhsType> &rhs)
+	{
+		return Vector2<Result>(rhs.x * lhs, rhs.y * lhs);
+	}
+	
+	/**
+	 * \breif Scalar division of a \c Vector2 object.
+	 * \arg \c lhs The \c Vector2 object to divide.
+	 * \arg \c rhs The scalar to divide the \c Vector2 object by.
+	 * \return A new \c Vector2 object that is the result of the scalar division
+	 */
+	template <typename RhsType, typename LhsType,
+						typename Result = typename std::common_type<RhsType,LhsType>::type>
+	Vector2<Result> operator/(const Vector2<LhsType> &lhs, const RhsType &rhs)
+	{
+		return Vector2<Result>(lhs.x / rhs, lhs.y / rhs);
+	}
 }
 
 #endif
