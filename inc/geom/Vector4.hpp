@@ -115,6 +115,8 @@ namespace geom {
   
   typedef Vector4<std::int32_t> Vec4i;
   typedef Vector4<std::uint32_t> Vec4u;
+  typedef Vector4<std::int64_t> Vec4l;
+  typedef Vector4<std::uint64_t> Vec4ul;
   typedef Vector4<float> Vec4f;
   typedef Vector4<double> Vec4d;
   

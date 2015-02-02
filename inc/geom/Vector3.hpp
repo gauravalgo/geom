@@ -172,6 +172,8 @@ namespace geom {
   
   typedef Vector3<std::int32_t> Vec3i;
   typedef Vector3<std::uint32_t> Vec3u;
+  typedef Vector3<std::int64_t> Vec3l;
+  typedef Vector3<std::uint64_t> Vec3ul;
   typedef Vector3<float> Vec3f;
   typedef Vector3<double> Vec3d;
   

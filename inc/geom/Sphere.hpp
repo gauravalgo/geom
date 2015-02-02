@@ -29,7 +29,7 @@ namespace geom {
 		Point3<Scalar> center;
 	};
 	
-	typedef Sphere<Double> Sphere3d;
+	typedef Sphere<double> Sphere3d;
 	typedef Sphere<float> Sphere3f;
 	typedef Sphere<std::uint32_t> Sphere3u;
 	typedef Sphere<std::int32_t> Sphere3i;

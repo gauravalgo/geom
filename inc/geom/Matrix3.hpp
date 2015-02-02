@@ -139,6 +139,8 @@ namespace geom {
   
   typedef Matrix3<std::int32_t> Matrix3i;
   typedef Matrix3<std::uint32_t> Matrix3u;
+  typedef Matrix3<std::int64_t> Matrix3l;
+  typedef Matrix3<std::uint64_t> Matrix3ul;
   typedef Matrix3<float> Matrix3f;
   typedef Matrix3<double> Matrix3d;
 }

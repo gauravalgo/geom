@@ -107,6 +107,8 @@ namespace geom {
   
   typedef Dimensions3<std::int32_t> Dimensions3i;
   typedef Dimensions3<std::uint32_t> Dimensions3u;
+	typedef Dimensions3<std::int64_t> Dimensions3l;
+	typedef Dimensions3<std::uint64_t> Dimensions3ul;
   typedef Dimensions3<float> Dimensions3f;
   typedef Dimensions3<double> Dimensions3d;
 }

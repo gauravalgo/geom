@@ -103,6 +103,8 @@ namespace geom {
   
   typedef Point3<std::int32_t> Point3i;
   typedef Point3<std::uint32_t> Point3u;
+  typedef Point3<std::int64_t> Point3l;
+  typedef Point3<std::uint64_t> Point3ul;
   typedef Point3<float> Point3f;
   typedef Point3<double> Point3d;
 }

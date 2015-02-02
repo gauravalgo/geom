@@ -166,6 +166,8 @@ namespace geom {
   
   typedef Vector2<std::int32_t> Vec2i;
   typedef Vector2<std::uint32_t> Vec2u;
+  typedef Vector2<std::int64_t> Vec2l;
+  typedef Vector2<std::uint64_t> Vec2ul;
   typedef Vector2<float> Vec2f;
   typedef Vector2<double> Vec2d;
   

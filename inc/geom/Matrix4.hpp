@@ -164,6 +164,8 @@ namespace geom {
   
   typedef Matrix4<std::int32_t> Matrix4i;
   typedef Matrix4<std::uint32_t> Matrix4u;
+  typedef Matrix4<std::int64_t> Matrix4l;
+  typedef Matrix4<std::uint64_t> Matrix4ul;
   typedef Matrix4<float> Matrix4f;
   typedef Matrix4<double> Matrix4d;
 }
