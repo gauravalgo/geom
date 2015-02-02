@@ -1,7 +1,16 @@
 
+#include <iostream>
 #include <gtest/gtest.h>
 
 #include "geom/Vector2.hpp"
+#include "TypeStrings.hpp"
+
+namespace geom {
+	template <typename Scalar>
+	void PrintTo(const Vector2<Scalar> & v, ::std::ostream* os) {
+		*os << "Vec2<" << TypeString<Scalar>() << ">(" << v.x << ", " << v.y << ")";
+	}
+}
 
 using namespace geom;
 
@@ -192,4 +201,37 @@ TEST(Vector2, DivEq) {
 	Vec2i v2(5, 3);
 	v1 /= v2;
 	EXPECT_VEC2(v1, 2, 2);
+}
+
+TEST(Vector2, Length1) {
+	Vec2i v1(0, 10);
+	EXPECT_EQ(length(v1), 10.0d);
+}
+
+TEST(Vector2, Length2) {
+	Vec2i v2(1,10);
+	EXPECT_EQ(((double)length(v2)), 10.04987562112089);
+}
+
+TEST(Vector2, Dot1) {
+	Vec2f v1(1.0, 2.0);
+	Vec2f v2(2.0, 1.0);
+	EXPECT_EQ(dot(v1, v2), 4.0);
+}
+
+TEST(Vector2, Dot2) {
+	Vec2f v1(1.5, 1.5);
+	Vec2f v2(2.0, 4.0);
+	EXPECT_EQ(dot(v1, v2), 9.0);
+}
+
+TEST(Vector2, Reflect1) {
+	Vec2f v1 = Vec2f(1.4142135623730951, -1.4142135623730951);
+	Vec2f v2(0,1);
+	EXPECT_EQ(reflect(v1, v2), Vec2f(1.4142135623730951, 1.4142135623730951));
+}
+
+TEST(Vector2, Normalize1) {
+	Vec2f v1 = Vec2f(1.0, 1.0);
+	EXPECT_EQ(normalize(v1), Vec2f(0.7071067811865475, 0.7071067811865475));
 }

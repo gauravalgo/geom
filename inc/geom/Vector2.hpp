@@ -30,6 +30,7 @@
 #define GEOM_VECTOR_2_HPP
 
 #include <cstdint>
+#include <cmath>
 
 namespace geom {
   /**
@@ -171,6 +172,38 @@ namespace geom {
   typedef Vector2<float> Vec2f;
   typedef Vector2<double> Vec2d;
   
+	/**
+	 * \brief Check \c Vector2 equality component-wise.
+	 * \arg \c lhs The left side of the comparison
+	 * \arg \c rhs The right side of the comparison
+	 * \return If each component in the the lhs vector is equal to the rhs vector
+	 */
+	template <typename LType, typename RType>
+	bool operator==(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
+		return (lhs.x == rhs.x && lhs.y == rhs.y);
+	}
+	
+	template <typename LType, typename RType>
+	bool operator!=(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
+		return !(lhs == rhs);
+	}
+	template <typename LType, typename RType>
+	bool operator>(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
+		return (lhs.x > rhs.x && lhs.y > rhs.y);
+	}
+	template <typename LType, typename RType>
+	bool operator>=(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
+		return (lhs.x >= rhs.x && lhs.y >= rhs.y);
+	}
+	template <typename LType, typename RType>
+	bool operator<(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
+		return (lhs.x < rhs.x && lhs.y < rhs.y);
+	}
+	template <typename LType, typename RType>
+	bool operator<=(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
+		return (lhs.x <= rhs.x && lhs.y <= rhs.y);
+	}
+	
   /**
    * \brief Add two \c Vector2 objects together and return the result.
    * \arg \c lhs The operand on the left hand side of the addition symbol
@@ -270,6 +303,70 @@ namespace geom {
 	Vector2<Result> operator/(const Vector2<LhsType> &lhs, const RhsType &rhs)
 	{
 		return Vector2<Result>(lhs.x / rhs, lhs.y / rhs);
+	}
+	
+	/**
+	 * \brief Get the length of the vector.
+	 * 
+	 * Any type vector which isn't a float or double vector is first converted to
+	 * a double vector.
+	 * 
+	 * \arg \c v The vector to get the length of.
+	 */
+	template <typename Scalar, typename RType = double>
+	RType length(const Vector2<Scalar> &v) {
+		return std::sqrt((double)(v.x * v.x + v.y * v.y));
+	}
+	template <>
+	float length(const Vector2<float> &f) {
+		return std::sqrt(f.x * f.x + f.y * f.y);
+	}
+	
+	/**
+	 * \brief Dot product between two vectors.
+	 * \arg \c lhs The \c Vector2 object on the left side of the dot operation.
+	 * \arg \c rhs The \c Vector2 object on the right of the dot operation.
+	 * \return The result of the dot product of the two \c Vector2 objects.
+	 */
+	template <typename RhsType, typename LhsType,
+						typename Result = typename std::common_type<RhsType,LhsType>::type>
+	Result dot(const Vector2<LhsType> &lhs, const Vector2<RhsType> &rhs) {
+		return lhs.x * rhs.x + lhs.y * rhs.y;
+	}
+	
+	/**
+	 * \brief Reflect the given vector around the given normal.
+	 * 
+	 * Given reflect(i,n), the reflection is calculated as
+	 * \f$ i - 2 * (i \cdot n) * n\f$
+	 * 
+	 * \arg \c vec The vector to reflect
+	 * \arg \c normal The normal vector of the surface vec reflected from
+	 * \return A new \c Vector2 object that is the reflection
+	 */
+	template <typename rtype, typename ltype,
+						typename Result = typename std::common_type<rtype,ltype>::type>
+	Vector2<Result> reflect(const Vector2<ltype> &vec,
+													const Vector2<rtype> &normal)
+	{
+		const Vector2<Result> i(vec);
+		const Vector2<Result> n(normal);
+		return i - ((2 * dot(i, n)) * n);
+	}
+	
+	/**
+	 * \brief Normalize the \c Vector2 object.
+	 * 
+	 * \arg \c vec The \c Vector2 object to normalize.
+	 * \return A new \c Vector2 object which is normalized.
+	 */
+	template <typename IntegralType, typename RType = double>
+	Vector2<RType> normalize(const Vector2<IntegralType> &source) {
+		return source / length(source);
+	}
+	template <>
+	Vector2<float> normalize(const Vector2<float> &source) {
+		return source / length<float>(source);
 	}
 }
 
