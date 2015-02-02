@@ -1,6 +1,6 @@
 
 /**
- * \File Line2.hpp
+ * \file Line2.hpp
  * \author Troy Varney <troy.a.varney@gmail.com>
  * \brief Definition header for Line2 structure
  */
