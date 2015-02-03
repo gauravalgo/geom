@@ -31,6 +31,7 @@
 
 #include <cstdint>
 #include <cmath>
+#include <type_traits>
 
 namespace geom {
   /**
@@ -313,12 +314,11 @@ namespace geom {
 	 * 
 	 * \arg \c v The vector to get the length of.
 	 */
-	template <typename Scalar, typename RType = double>
-	RType length(const Vector2<Scalar> &v) {
+	template <typename Scalar>
+	double length(const Vector2<Scalar> &v) {
 		return std::sqrt((double)(v.x * v.x + v.y * v.y));
 	}
-	template <>
-	float length(const Vector2<float> &f) {
+	inline float length(const Vector2<float> &f) {
 		return std::sqrt(f.x * f.x + f.y * f.y);
 	}
 	
@@ -364,9 +364,8 @@ namespace geom {
 	Vector2<RType> normalize(const Vector2<IntegralType> &source) {
 		return source / length(source);
 	}
-	template <>
-	Vector2<float> normalize(const Vector2<float> &source) {
-		return source / length<float>(source);
+	inline Vector2<float> normalize(const Vector2<float> &source) {
+		return source / length(source);
 	}
 }
 

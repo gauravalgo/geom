@@ -251,3 +251,31 @@ TEST(Vector2, Normalize1) {
 	Vec2f ref = Vec2f(0.7071067811865475, 0.7071067811865475);
 	EXPECT_VEC2_FLOAT_EQ(ref, n);
 }
+
+TEST(Vector2, NormalizeType) {
+	Vec2f v1(1.0, 1.0);
+	auto n1 = normalize(v1);
+	::testing::StaticAssertTypeEq<decltype(n1), Vector2<float>>();
+	
+	Vec2d v2(1.0, 1.0);
+	auto n2 = normalize(v2);
+	::testing::StaticAssertTypeEq<decltype(n2), Vector2<double>>();
+	
+	Vec2i v3(1, 1);
+	auto n3 = normalize(v3);
+	::testing::StaticAssertTypeEq<decltype(n3), Vector2<double>>();
+}
+
+TEST(Vector2, LengthType) {
+	Vec2f v1(1.0, 1.0);
+	auto n1 = length(v1);
+	::testing::StaticAssertTypeEq<decltype(n1), float>();
+	
+	Vec2d v2(1.0, 1.0);
+	auto n2 = length(v2);
+	::testing::StaticAssertTypeEq<decltype(n2), double>();
+	
+	Vec2i v3(1, 1);
+	auto n3 = length(v3);
+	::testing::StaticAssertTypeEq<decltype(n3), double>();
+}
