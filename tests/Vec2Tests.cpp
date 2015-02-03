@@ -25,6 +25,20 @@ using namespace geom;
 		EXPECT_EQ((v1).y, (v2).y); \
 	}while(0)
 
+#define EXPECT_VEC2_FLOAT_EQ(v1, v2)						\
+	do {																					\
+		EXPECT_FLOAT_EQ((v1).x, (v2).x);						\
+		EXPECT_FLOAT_EQ((v1).y, (v2).y);						\
+	}while(0);
+
+#define EXPECT_VEC2_DOUBLE_EQ(v1, v2)						\
+	do {																					\
+		EXPECT_DOUBLE_EQ((v1).x, (v2).x);						\
+		EXPECT_DOUBLE_EQ((v1).y, (v2).y);						\
+	}while(0);
+
+
+
 TEST(Vector2, DefaultConstructor) {
   Vector2<int> v;
 	EXPECT_VEC2(v,0,0);
@@ -233,5 +247,7 @@ TEST(Vector2, Reflect1) {
 
 TEST(Vector2, Normalize1) {
 	Vec2f v1 = Vec2f(1.0, 1.0);
-	EXPECT_EQ(normalize(v1), Vec2f(0.7071067811865475, 0.7071067811865475));
+	Vec2f n = normalize(v1);
+	Vec2f ref = Vec2f(0.7071067811865475, 0.7071067811865475);
+	EXPECT_VEC2_FLOAT_EQ(ref, n);
 }
