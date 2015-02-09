@@ -54,15 +54,14 @@ TEST(Vector2, CopyConstructor) {
   Vector2<int> v2(v1);
 	EXPECT_VEC2_EQ(v1,v2);
 }
-TEST(Vector2, ConvertConstructor1) {
+TEST(Vector2, ConvertConstructor) {
   Vector2<double> v1(1.1, 2.2);
   Vector2<int> v2(v1);
 	EXPECT_VEC2(v2, static_cast<int>(v1.x), static_cast<int>(v1.y));
-}
-TEST(Vector2, ConvertConstructor2) {
-  Vector2<int> v1(5, 10);
-  Vector2<double> v2(v1);
-	EXPECT_VEC2(v2, static_cast<double>(v1.x), static_cast<double>(v1.y));
+	
+	Vector2<int> v3(5, 10);
+	Vector2<double> v4(v3);
+	EXPECT_VEC2(v4, static_cast<double>(v3.x), static_cast<double>(v3.y));
 }
 TEST(Vector2, Assignment) {
   Vector2<int> v1(1,2);
@@ -70,68 +69,57 @@ TEST(Vector2, Assignment) {
   v2 = v1;
 	EXPECT_VEC2_EQ(v1, v2);
 }
-TEST(Vector2, ConvertAssignment1) {
+TEST(Vector2, ConvertAssignment) {
   Vector2<double> v1(1.1, 2.2);
   Vector2<int> v2;
   v2 = v1;
 	EXPECT_VEC2(v2, static_cast<int>(v1.x), static_cast<int>(v1.y));
-}
-TEST(Vector2, ConvertAssignment2) {
-  Vector2<int> v1(5, 10);
-  Vector2<double> v2;
-  v2 = v1;
-	EXPECT_VEC2(v2, static_cast<double>(v1.x), static_cast<double>(v1.y));
+	
+  Vector2<int> v3(5, 10);
+  Vector2<double> v4;
+  v4 = v3;
+	EXPECT_VEC2(v4, static_cast<double>(v3.x), static_cast<double>(v3.y));
 }
 
-TEST(Vector2, Negation1) {
+TEST(Vector2, Negation) {
   Vec2i v1(1,2);
 	Vec2i v2 = -v1;
 	EXPECT_VEC2(v2, -1, -2);
-}
-
-TEST(Vector2, Negation2) {
-	Vec2i v1(-1,2);
-	Vec2i v2 = -v1;
+	
+	v1 = Vec2i(-1,2);
+	v2 = -v1;
 	EXPECT_VEC2(v2, 1, -2);
-}
-
-TEST(Vector2, Negation3) {
-	Vec2i v1(1,-2);
-	Vec2i v2 = -v1;
+	
+	v1 = Vec2i(1,-2);
+	v2 = -v1;
 	EXPECT_VEC2(v2, -1,2);
-}
-TEST(Vector2, Negation4) {
-	Vec2i v1(-1,-2);
-	Vec2i v2 = -v1;
+	
+	v1 = Vec2i(-1,-2);
+	v2 = -v1;
 	EXPECT_VEC2(v2, 1,2);
 }
 
-TEST(Vector2, Addition1) {
+TEST(Vector2, Addition) {
   Vec2i v1(1,2);
   Vec2i v2(0,0);
   Vec2i v3(v1 + v2);
 	EXPECT_VEC2(v3, 1,2);
-}
-
-TEST(Vector2, Addition2) {
-  Vec2i v1(1,2);
-  Vec2i v2(-1, -2);
-  Vec2i v3(v1 + v2);
+	
+  v1 = Vec2i(1,2);
+  v2 = Vec2i(-1, -2);
+  v3 = v1 + v2;
 	EXPECT_VEC2(v3, 0, 0);
-}
-
-TEST(Vector2, Addition3) {
-  Vec2i v1(1,1);
-  Vec2i v2(2,3);
-  Vec2i v3(v1 + v2);
+	
+  v1 = Vec2i(1,1);
+  v2 = Vec2i(2,3);
+  v3 = v1 + v2;
 	EXPECT_VEC2(v3, 3, 4);
-}
-
-TEST(Vector2, Addition_DifferentTypes) {
-	Vec2i v1(3,2);
-	Vec2f v2(2,3);
-	Vec2i v3 = v1 + v2;
-	EXPECT_VEC2(v3, 5, 5);
+	
+	Vec2i v4(3,2);
+	Vec2f v5(2,3);
+	auto v6 = v4 + v5;
+	::testing::StaticAssertTypeEq<decltype(v6),Vector2<float>>();
+	EXPECT_EQ(v6, Vec2f(5,5));
 }
 
 TEST(Vector2, AddEq) {
@@ -139,26 +127,22 @@ TEST(Vector2, AddEq) {
   Vec2i v2(2,1);
   v1 += v2;
 	EXPECT_VEC2(v1, 3, 3);
+	
+	Vec2i v3(1,2);
+	Vec2f v4(2,3);
+	v4 += v3;
+	EXPECT_EQ(v4, Vec2f(3.0,5.0));
 }
 
-TEST(Vector2, AddEq_DifferentTypes) {
-	Vec2i v1(1,2);
-	Vec2f v2(2,3);
-	v1 += v2;
-	EXPECT_VEC2(v1, 3, 5);
-}
-
-TEST(Vector2, Subtraction1) {
+TEST(Vector2, Subtraction) {
 	Vec2i v1(2,3);
 	Vec2i v2(1,2);
 	Vec2i v3 = v1 - v2;
 	EXPECT_VEC2(v3, 1, 1);
-}
-
-TEST(Vector2, Subtraction2) {
-	Vec2i v1(2,3);
-	Vec2i v2(-1,-2);
-	Vec2i v3 = v1 - v2;
+	
+	v1 = Vec2i(2,3);
+	v2 = Vec2i(-1,-2);
+	v3 = v1 - v2;
 	EXPECT_VEC2(v3, 3, 5);
 }
 
@@ -169,24 +153,21 @@ TEST(Vector2, SubEq) {
 	EXPECT_VEC2(v1, 1, 1);
 }
 
-TEST(Vector2, Multiplication1) {
+TEST(Vector2, Multiplication) {
 	Vec2i v1(2,2);
 	Vec2i v2(3,4);
 	Vec2i v3 = v1 * v2;
 	EXPECT_VEC2(v3, 6, 8);
-}
-
-TEST(Vector2, Multiplication2) {
-	Vec2d v1(2.5,2.5);
-	Vec2d v2(2.0,2.0);
-	Vec2d v3 = v1 * v2;
-	EXPECT_VEC2(v3, 5.0, 5.0);
-}
-TEST(Vector2, Multiplication3) {
-	Vec2i v1(4, 2);
-	Vec2i v2(0, -1);
-	Vec2i v3 = v1 * v2;
+	
+	v1 = Vec2i(4, 2);
+	v2 = Vec2i(0, -1);
+	v3 = v1 * v2;
 	EXPECT_VEC2(v3, 0, -2);
+	
+	Vec2d v4(2.5,2.5);
+	Vec2d v5(2.0,2.0);
+	Vec2d v6 = v4 * v5;
+	EXPECT_VEC2(v6, 5.0, 5.0);
 }
 
 TEST(Vector2, MulEq) {
@@ -196,17 +177,15 @@ TEST(Vector2, MulEq) {
 	EXPECT_VEC2(v1, 2, 2);
 }
 
-TEST(Vector2, Division1) {
+TEST(Vector2, Division) {
 	Vec2i v1(4, 2);
 	Vec2i v2(2, 2);
 	Vec2i v3 = v1 / v2;
 	EXPECT_VEC2(v3, 2, 1);
-}
-
-TEST(Vector2, Division2) {
-	Vec2i v1(4, 2);
-	Vec2i v2(-2, 1);
-	Vec2i v3 = v1 / v2;
+	
+	v1 = Vec2i(4, 2);
+	v2 = Vec2i(-2, 1);
+	v3 = v1 / v2;
 	EXPECT_VEC2(v3, -2, 2);
 }
 
@@ -217,39 +196,54 @@ TEST(Vector2, DivEq) {
 	EXPECT_VEC2(v1, 2, 2);
 }
 
-TEST(Vector2, Length1) {
+TEST(Vector2, Length) {
 	Vec2i v1(0, 10);
 	EXPECT_EQ(length(v1), 10.0d);
-}
-
-TEST(Vector2, Length2) {
+	
 	Vec2i v2(1,10);
 	EXPECT_EQ(((double)length(v2)), 10.04987562112089);
 }
 
-TEST(Vector2, Dot1) {
+TEST(Vector2, Dot) {
 	Vec2f v1(1.0, 2.0);
 	Vec2f v2(2.0, 1.0);
 	EXPECT_EQ(dot(v1, v2), 4.0);
-}
-
-TEST(Vector2, Dot2) {
-	Vec2f v1(1.5, 1.5);
-	Vec2f v2(2.0, 4.0);
+	
+	v1 = Vec2f(1.5, 1.5);
+	v2 = Vec2f(2.0, 4.0);
 	EXPECT_EQ(dot(v1, v2), 9.0);
 }
 
-TEST(Vector2, Reflect1) {
+TEST(Vector2, Reflect) {
 	Vec2f v1 = Vec2f(1.4142135623730951, -1.4142135623730951);
 	Vec2f v2(0,1);
 	EXPECT_EQ(reflect(v1, v2), Vec2f(1.4142135623730951, 1.4142135623730951));
 }
 
-TEST(Vector2, Normalize1) {
+TEST(Vector2, Normalize) {
 	Vec2f v1 = Vec2f(1.0, 1.0);
 	Vec2f n = normalize(v1);
 	Vec2f ref = Vec2f(0.7071067811865475, 0.7071067811865475);
 	EXPECT_VEC2_FLOAT_EQ(ref, n);
+	
+	v1 = Vec2f(1.0, 0.0);
+	n = normalize(v1);
+	ref = Vec2f(1.0,0.0);
+	EXPECT_VEC2_FLOAT_EQ(ref, n);
+}
+
+TEST(Vector2, OperatorTypes) {
+	Vec2f v1(1.0, 0.0);
+	Vec2i v2(2, 1);
+	Vec2d v3(3.0, 2.0);
+	auto r1 = v1 + v2;
+	::testing::StaticAssertTypeEq<decltype(r1),Vector2<float>>();
+	
+	auto r2 = v2 + v3;
+	::testing::StaticAssertTypeEq<decltype(r2),Vector2<double>>();
+	
+	auto r3 = v1 + v3;
+	::testing::StaticAssertTypeEq<decltype(r3),Vector2<double>>();
 }
 
 TEST(Vector2, NormalizeType) {

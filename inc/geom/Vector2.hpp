@@ -31,7 +31,8 @@
 
 #include <cstdint>
 #include <cmath>
-#include <type_traits>
+
+#include "VectorTraits.hpp"
 
 namespace geom {
   /**
@@ -39,6 +40,8 @@ namespace geom {
    */
   template <typename Scalar>
   struct Vector2 {
+		typedef Scalar type;
+		
     /**
      * \brief Construct a \c Vector2 with 0 length
      */
@@ -50,7 +53,7 @@ namespace geom {
      * \arg \c x The x component of the \c Vector2 object
      * \arg \c y The y component of the \c Vector2 object
      */
-    constexpr Vector2(Scalar x, Scalar y) :
+    constexpr Vector2(const Scalar &x, const Scalar &y) :
       x(x), y(y)
     { }
     /**
@@ -123,26 +126,6 @@ namespace geom {
 		}
 		
 		/**
-		 * \brief Assign the result of multiplying two vectors.
-		 * \arg \c rhs The vector to muliply this \c Vector2 object by
-		 * \return A reference to the \c Vector2 object being assigned to
-		 */
-		template <typename RhsType>
-		Vector2<Scalar> & operator*=(const Vector2<RhsType> &rhs) {
-			return *this = *this * rhs;
-		}
-		
-		/**
-		 * \breif Assign the result of dividing two vectors.
-		 * \arg \c rhs The vector to divide this \c Vector2 object by
-		 * \return A reference to the \c Vector2 object being assigned to
-		 */
-		template <typename RhsType>
-		Vector2<Scalar> & operator/=(const Vector2<RhsType> &rhs) {
-			return *this = *this / rhs;
-		}
-		
-		/**
 		 * \breif Assign the result of multiplying a vector by a scalar.
 		 * \arg \c rhs The scalar to multiply this vector by
 		 * \return A reference to the \c Vector2 object being assigned to
@@ -177,7 +160,8 @@ namespace geom {
 	 * \brief Check \c Vector2 equality component-wise.
 	 * \arg \c lhs The left side of the comparison
 	 * \arg \c rhs The right side of the comparison
-	 * \return If each component in the the lhs vector is equal to the rhs vector
+	 * \return If each component in the the lhs vector is equal to the rhs
+	 * vector
 	 */
 	template <typename LType, typename RType>
 	bool operator==(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
@@ -209,13 +193,13 @@ namespace geom {
    * \brief Add two \c Vector2 objects together and return the result.
    * \arg \c lhs The operand on the left hand side of the addition symbol
    * \arg \c rhs The operand on the right hand side of the addition symbol
-   * \return A new \c Vector2 object that contains the result of adding lhs and
-   * rhs
+   * \return A new \c Vector2 object that contains the result of adding lhs
+	 * and rhs
    */
   template <typename RhsType, typename LhsType,
-	    typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector2<Result> operator+(const Vector2<LhsType> &lhs,
-			    const Vector2<RhsType> &rhs)
+														const Vector2<RhsType> &rhs)
   {
     return Vector2<Result>(lhs.x + rhs.x, lhs.y + rhs.y);
   }
@@ -228,7 +212,7 @@ namespace geom {
 	 * rhs from lhs
 	 */
   template <typename RhsType, typename LhsType,
-            typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector2<Result> operator-(const Vector2<LhsType> &lhs,
                             const Vector2<RhsType> &rhs)
   {
@@ -243,7 +227,7 @@ namespace geom {
 	 * lhs by rhs.
 	 */
   template <typename RhsType, typename LhsType,
-            typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector2<Result> operator*(const Vector2<LhsType> &lhs,
                             const Vector2<RhsType> &rhs)
   {
@@ -258,7 +242,7 @@ namespace geom {
 	 * by rhs.
 	 */
   template <typename RhsType, typename LhsType,
-            typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector2<Result> operator/(const Vector2<LhsType> &lhs,
                             const Vector2<RhsType> &rhs)
   {
@@ -273,9 +257,11 @@ namespace geom {
 	 * multiplication.
 	 */
 	template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
 	Vector2<Result> operator*(const Vector2<LhsType> &lhs, const RhsType &rhs)
 	{
+		static_assert(!IsVector<RhsType>(),
+									"Multiplication not defined for the given types");
 		return Vector2<Result>(lhs.x * rhs, lhs.y * rhs);
 	}
 	
@@ -287,9 +273,11 @@ namespace geom {
 	 * multiplication.
 	 */
 	template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
 	Vector2<Result> operator*(const LhsType &lhs, const Vector2<RhsType> &rhs)
 	{
+		static_assert(!IsVector<LhsType>(),
+									"Multiplication not defined for the given types");
 		return Vector2<Result>(rhs.x * lhs, rhs.y * lhs);
 	}
 	
@@ -300,9 +288,11 @@ namespace geom {
 	 * \return A new \c Vector2 object that is the result of the scalar division
 	 */
 	template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
 	Vector2<Result> operator/(const Vector2<LhsType> &lhs, const RhsType &rhs)
 	{
+		static_assert(!IsVector<RhsType>(),
+									"Division not defined for the given types");
 		return Vector2<Result>(lhs.x / rhs, lhs.y / rhs);
 	}
 	
@@ -329,7 +319,7 @@ namespace geom {
 	 * \return The result of the dot product of the two \c Vector2 objects.
 	 */
 	template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
 	Result dot(const Vector2<LhsType> &lhs, const Vector2<RhsType> &rhs) {
 		return lhs.x * rhs.x + lhs.y * rhs.y;
 	}
@@ -345,7 +335,7 @@ namespace geom {
 	 * \return A new \c Vector2 object that is the reflection
 	 */
 	template <typename rtype, typename ltype,
-						typename Result = typename std::common_type<rtype,ltype>::type>
+						typename Result = typename VectorOpResult<rtype,ltype>::type>
 	Vector2<Result> reflect(const Vector2<ltype> &vec,
 													const Vector2<rtype> &normal)
 	{
@@ -367,6 +357,15 @@ namespace geom {
 	inline Vector2<float> normalize(const Vector2<float> &source) {
 		return source / length(source);
 	}
+	
+	template <typename T>
+	struct IsVector<Vector2<T>> : public std::true_type { };
+	template <typename T>
+	struct IsVector2<Vector2<T>> : public std::true_type { };
+	template <typename T>
+	struct VectorType<Vector2<T>> {
+		typedef T type;
+	};
 }
 
 #endif
