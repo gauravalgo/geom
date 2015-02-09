@@ -262,3 +262,29 @@ TEST(Vector2, Normalize) {
 	EXPECT_FLOAT_EQ(length(normalize(Vec2f(1.0,1.0))), 1.0);
 	EXPECT_EQ(normalize(Vec2f(1,0)),Vec2f(1,0));
 }
+
+TEST(Vector2, Refract) {
+	/* The return type of refract will always be the smallest floating point
+	 * point type which is not smaller than any of the given types.
+	 * This means that if any type is a double, the return type is a vector of
+	 * doubles. Otherwise it is a vector of floats.
+	 */
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2i(),Vec2i(),0.5f)),
+																Vector2<float>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2i(),Vec2i(),0.5)),
+																Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2f(),Vec2f(),0.5f)),
+																Vector2<float>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2f(),Vec2f(),0.5)),
+																Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2d(),Vec2d(),0.5)),
+																Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2i(),Vec2f(),0.5f)),
+																Vector2<float>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2i(),Vec2f(),0.5)),
+																Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2i(),Vec2d(),0.05f)),
+																Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec2f(),Vec2d(),0.05f)),
+																Vector2<double>>();
+}

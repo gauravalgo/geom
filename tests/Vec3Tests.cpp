@@ -235,3 +235,24 @@ TEST(Vector3, Normalize) {
 	EXPECT_EQ(normalize(Vec3f(0,0,1)), Vec3f(0,0,1));
 	EXPECT_EQ(normalize(Vec3f(1,1,1)), Vec3f(SQRT3,SQRT3,SQRT3));
 }
+
+TEST(Vector3, Refract) {
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3i(),Vec3i(),0.5f)),
+																Vector3<float>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3i(),Vec3i(),0.5)),
+																Vector3<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3f(),Vec3f(),0.5f)),
+																Vector3<float>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3f(),Vec3f(),0.5)),
+																Vector3<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3d(),Vec3d(),0.5)),
+																Vector3<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3i(),Vec3f(),0.5f)),
+																Vector3<float>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3i(),Vec3f(),0.5)),
+																Vector3<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3i(),Vec3d(),0.05f)),
+																Vector3<double>>();
+	::testing::StaticAssertTypeEq<decltype(refract(Vec3f(),Vec3d(),0.05f)),
+																Vector3<double>>();
+}

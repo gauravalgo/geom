@@ -409,6 +409,44 @@ namespace geom {
 		return source / length(source);
 	}
 	
+	/**
+	 * \brief Calculate refracted vector.
+	 * 
+	 * The refracted index is calculated by finding the value
+	 * \f$k = 1 - e * e * (1 - (n \cdot i)^2)\f$
+	 * and if it is negative returning a null vector, otherwise returning the
+	 * vector \f$e * i - (e * (n \cdot i) + k^0.5) * n\f$
+	 * 
+	 * This function will cause a compile error if the index of refraction is
+	 * not a floating point type. To allow this function to work with custom
+	 * types that express proper floating point semantics, override the standard
+	 * structure \c std::is_floating_point for your type to be \c std::true_type
+	 * 
+	 * The return type is the common type between the vector types and the index
+	 * type.
+	 * 
+	 * \arg \c i The incident vector.
+	 * \arg \c n The normal vector of the refracting surface.
+	 * \arg \c eta The index of refraction of the refracting surface.
+	 * \return The refracted \c Vector2 object
+	 */
+	template <typename VType1, typename VType2, typename FType,
+						typename R = typename std::common_type<FType,VType1,VType2>::type>
+	Vector3<R> refract(const Vector3<VType1> &i, const Vector3<VType2> &n,
+										 const FType &eta)
+	{
+		static_assert(std::is_floating_point<FType>::value,
+									"The type of a refraction index must be floating point");
+		
+		R dot_ni = dot(n, i);
+		R k = 1.0 - eta * eta * (1.0 - dot_ni * dot_ni);
+		if(k < 0.0) {
+			return Vector3<R>(0.0, 0.0);
+		}else {
+			return (eta * i - (eta * dot_ni + std::sqrt(k)) * n);
+		}
+	}
+	
 	template <typename T>
 	struct IsVector<Vector3<T>> : public std::true_type { };
 	template <typename T>
