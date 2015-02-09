@@ -168,22 +168,60 @@ namespace geom {
 		return (lhs.x == rhs.x && lhs.y == rhs.y);
 	}
 	
+	/**
+	 * \breif Test if two vectors are not equal.
+	 * \arg \c lhs The vector on the left of the inequality operator.
+	 * \arg \c rhs The vector on the right of the inequality operator.
+	 * \return True if any element is different, False otherwise.
+	 */
 	template <typename LType, typename RType>
 	bool operator!=(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
 		return !(lhs == rhs);
 	}
+	
+	/**
+	 * \breif Test vectors component-wise for being less than.
+	 * \arg \c lhs The vector on the left of the less than operator.
+	 * \arg \c rhs The vector on the right of the less than operator.
+	 * \return True if all elements in lhs are smaller than the corresponding
+	 * element in rhs.
+	 */
 	template <typename LType, typename RType>
 	bool operator>(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
 		return (lhs.x > rhs.x && lhs.y > rhs.y);
 	}
+	
+	/**
+	 * \brief Test vectors component-wise for being less than or equal.
+	 * \arg \c lhs The vector on the left of the less than or equal operator.
+	 * \arg \c rhs The vector on the right of the less than or equal operator.
+	 * \return True if all elements in lhs are smaller than or equal to the
+	 * corresponding element in rhs.
+	 */
 	template <typename LType, typename RType>
 	bool operator>=(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
 		return (lhs.x >= rhs.x && lhs.y >= rhs.y);
 	}
+	
+	/**
+	 * \brief Test vectors component-wise for being greater than.
+	 * \arg \c lhs The vector on the left of the greater than operator.
+	 * \arg \c rhs The vector on the right of the greater than operator.
+	 * \return True if all elements in lhs are larger than the corresponding
+	 * element in rhs.
+	 */
 	template <typename LType, typename RType>
 	bool operator<(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
 		return (lhs.x < rhs.x && lhs.y < rhs.y);
 	}
+	
+	/**
+	 * \brief Test vectors component-wise for being greater than or equal.
+	 * \arg \c lhs The vector on the left of the greater than or equal operator.
+	 * \arg \c rhs The vector on the right of the greater than or equal operator.
+	 * \return True if all elements in lhs are larger than or equal to the
+	 * corresponding element in rhs.
+	 */
 	template <typename LType, typename RType>
 	bool operator<=(const Vector2<LType> &lhs, const Vector2<RType> &rhs) {
 		return (lhs.x <= rhs.x && lhs.y <= rhs.y);
