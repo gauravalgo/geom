@@ -158,26 +158,13 @@ TEST(Vector2, Negation) {
 }
 
 TEST(Vector2, Addition) {
-  Vec2i v1(1,2);
-  Vec2i v2(0,0);
-  Vec2i v3(v1 + v2);
-	EXPECT_VEC2(v3, 1,2);
-	
-  v1 = Vec2i(1,2);
-  v2 = Vec2i(-1, -2);
-  v3 = v1 + v2;
-	EXPECT_VEC2(v3, 0, 0);
-	
-  v1 = Vec2i(1,1);
-  v2 = Vec2i(2,3);
-  v3 = v1 + v2;
-	EXPECT_VEC2(v3, 3, 4);
-	
-	Vec2i v4(3,2);
-	Vec2f v5(2,3);
-	auto v6 = v4 + v5;
-	::testing::StaticAssertTypeEq<decltype(v6),Vector2<float>>();
-	EXPECT_EQ(v6, Vec2f(5,5));
+	EXPECT_EQ(Vec2i(1,2) + Vec2i(0,0), Vec2i(1,2));
+	EXPECT_EQ(Vec2i(1,2) + Vec2i(-1,-2), Vec2i(0,0));
+	EXPECT_EQ(Vec2i(1,1) + Vec2i(2,3), Vec2i(3,4));
+	EXPECT_EQ(Vec2i(2,3) + Vec2f(3,2), Vec2f(5,5));
+	::testing::StaticAssertTypeEq<decltype(Vec2i()+Vec2f()),Vector2<float>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2i()+Vec2d()),Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2f()+Vec2d()),Vector2<double>>();
 }
 
 TEST(Vector2, AddEq) {
@@ -193,15 +180,12 @@ TEST(Vector2, AddEq) {
 }
 
 TEST(Vector2, Subtraction) {
-	Vec2i v1(2,3);
-	Vec2i v2(1,2);
-	Vec2i v3 = v1 - v2;
-	EXPECT_VEC2(v3, 1, 1);
-	
-	v1 = Vec2i(2,3);
-	v2 = Vec2i(-1,-2);
-	v3 = v1 - v2;
-	EXPECT_VEC2(v3, 3, 5);
+	EXPECT_EQ(Vec2i(2,3) - Vec2i(1,2), Vec2i(1,1));
+	EXPECT_EQ(Vec2i(2,3) - Vec2i(-1,-2), Vec2i(3,5));
+	EXPECT_EQ(Vec2i(2,3) - Vec2i(0,0), Vec2i(2,3));
+	::testing::StaticAssertTypeEq<decltype(Vec2i()-Vec2f()),Vector2<float>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2i()-Vec2d()),Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2f()-Vec2d()),Vector2<double>>();
 }
 
 TEST(Vector2, SubEq) {
@@ -212,20 +196,15 @@ TEST(Vector2, SubEq) {
 }
 
 TEST(Vector2, Multiplication) {
-	Vec2i v1(2,2);
-	Vec2i v2(3,4);
-	Vec2i v3 = v1 * v2;
-	EXPECT_VEC2(v3, 6, 8);
-	
-	v1 = Vec2i(4, 2);
-	v2 = Vec2i(0, -1);
-	v3 = v1 * v2;
-	EXPECT_VEC2(v3, 0, -2);
-	
-	Vec2d v4(2.5,2.5);
-	Vec2d v5(2.0,2.0);
-	Vec2d v6 = v4 * v5;
-	EXPECT_VEC2(v6, 5.0, 5.0);
+	EXPECT_EQ(Vec2i(2,2) * Vec2i(0,0), Vec2i(0,0));
+	EXPECT_EQ(Vec2i(2,3) * Vec2i(1,1), Vec2i(2,3));
+	EXPECT_EQ(Vec2i(3,2) * Vec2i(-1,0), Vec2i(-3,0));
+	EXPECT_EQ(Vec2i(2,2) * Vec2i(3,4), Vec2i(6,8));
+	EXPECT_EQ(Vec2i(4,2) * Vec2i(0,-1), Vec2i(0,-2));
+	EXPECT_EQ(Vec2d(2.5,2.5) * Vec2d(2.0,2.0), Vec2d(5.0,5.0));
+	::testing::StaticAssertTypeEq<decltype(Vec2i()*Vec2f()),Vector2<float>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2i()*Vec2d()),Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2f()*Vec2d()),Vector2<double>>();
 }
 
 TEST(Vector2, MulEq) {
@@ -236,15 +215,14 @@ TEST(Vector2, MulEq) {
 }
 
 TEST(Vector2, Division) {
-	Vec2i v1(4, 2);
-	Vec2i v2(2, 2);
-	Vec2i v3 = v1 / v2;
-	EXPECT_VEC2(v3, 2, 1);
-	
-	v1 = Vec2i(4, 2);
-	v2 = Vec2i(-2, 1);
-	v3 = v1 / v2;
-	EXPECT_VEC2(v3, -2, 2);
+	EXPECT_EQ(Vec2i(4,2) / Vec2i(2,2), Vec2i(2,1));
+	EXPECT_EQ(Vec2i(4,2) / Vec2i(-2,1), Vec2i(-2,2));
+	EXPECT_EQ(Vec2i(4,2) / Vec2i(1,1), Vec2i(4,2));
+	EXPECT_EQ(Vec2d(4,2) / Vec2d(0.5,0.5), Vec2d(8,4));
+	EXPECT_EQ(Vec2d(4,3) / Vec2d(-0.1,2.0), Vec2d(-40,1.5));
+	::testing::StaticAssertTypeEq<decltype(Vec2i()/Vec2f()),Vector2<float>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2i()/Vec2d()),Vector2<double>>();
+	::testing::StaticAssertTypeEq<decltype(Vec2f()/Vec2d()),Vector2<double>>();
 }
 
 TEST(Vector2, DivEq) {
@@ -255,79 +233,32 @@ TEST(Vector2, DivEq) {
 }
 
 TEST(Vector2, Length) {
-	Vec2i v1(0, 10);
-	EXPECT_EQ(length(v1), 10.0d);
-	
-	Vec2i v2(1,10);
-	EXPECT_EQ(((double)length(v2)), 10.04987562112089);
+	EXPECT_EQ(length(Vec2i(0,10)), 10.0);
+	EXPECT_EQ(length(Vec2i(1,10)), 10.04987562112089);
+	EXPECT_EQ(length(Vec2i(2,2)), 2.8284271247461903);
+	::testing::StaticAssertTypeEq<decltype(length(Vec2i())),double>();
+	::testing::StaticAssertTypeEq<decltype(length(Vec2f())),float>();
+	::testing::StaticAssertTypeEq<decltype(length(Vec2d())),double>();
 }
 
 TEST(Vector2, Dot) {
-	Vec2f v1(1.0, 2.0);
-	Vec2f v2(2.0, 1.0);
-	EXPECT_EQ(dot(v1, v2), 4.0);
-	
-	v1 = Vec2f(1.5, 1.5);
-	v2 = Vec2f(2.0, 4.0);
-	EXPECT_EQ(dot(v1, v2), 9.0);
+	EXPECT_EQ(dot(Vec2f(1,2),Vec2f(2,1)),4.0f);
+	EXPECT_EQ(dot(Vec2f(1.5,1.5),Vec2f(2.0,4.0)),9.0f);
+	EXPECT_EQ(dot(Vec2f(0,0),Vec2f(10,10)),0.0f);
+	::testing::StaticAssertTypeEq<decltype(dot(Vec2i(),Vec2f())),float>();
+	::testing::StaticAssertTypeEq<decltype(dot(Vec2i(),Vec2d())),double>();
+	::testing::StaticAssertTypeEq<decltype(dot(Vec2f(),Vec2d())),double>();
 }
 
 TEST(Vector2, Reflect) {
-	Vec2f v1 = Vec2f(1.4142135623730951, -1.4142135623730951);
-	Vec2f v2(0,1);
-	EXPECT_EQ(reflect(v1, v2), Vec2f(1.4142135623730951, 1.4142135623730951));
+	EXPECT_EQ(reflect(Vec2f(1.4142135623730951, -1.4142135623730951),
+										Vec2f(0,1)),
+						Vec2f(1.4142135623730951, 1.4142135623730951));
 }
 
 TEST(Vector2, Normalize) {
-	Vec2f v1 = Vec2f(1.0, 1.0);
-	Vec2f n = normalize(v1);
-	Vec2f ref = Vec2f(0.7071067811865475, 0.7071067811865475);
-	EXPECT_VEC2_FLOAT_EQ(ref, n);
-	
-	v1 = Vec2f(1.0, 0.0);
-	n = normalize(v1);
-	ref = Vec2f(1.0,0.0);
-	EXPECT_VEC2_FLOAT_EQ(ref, n);
-}
-
-TEST(Vector2, OperatorTypes) {
-	Vec2f v1(1.0, 0.0);
-	Vec2i v2(2, 1);
-	Vec2d v3(3.0, 2.0);
-	auto r1 = v1 + v2;
-	::testing::StaticAssertTypeEq<decltype(r1),Vector2<float>>();
-	
-	auto r2 = v2 + v3;
-	::testing::StaticAssertTypeEq<decltype(r2),Vector2<double>>();
-	
-	auto r3 = v1 + v3;
-	::testing::StaticAssertTypeEq<decltype(r3),Vector2<double>>();
-}
-
-TEST(Vector2, NormalizeType) {
-	Vec2f v1(1.0, 1.0);
-	auto n1 = normalize(v1);
-	::testing::StaticAssertTypeEq<decltype(n1), Vector2<float>>();
-	
-	Vec2d v2(1.0, 1.0);
-	auto n2 = normalize(v2);
-	::testing::StaticAssertTypeEq<decltype(n2), Vector2<double>>();
-	
-	Vec2i v3(1, 1);
-	auto n3 = normalize(v3);
-	::testing::StaticAssertTypeEq<decltype(n3), Vector2<double>>();
-}
-
-TEST(Vector2, LengthType) {
-	Vec2f v1(1.0, 1.0);
-	auto n1 = length(v1);
-	::testing::StaticAssertTypeEq<decltype(n1), float>();
-	
-	Vec2d v2(1.0, 1.0);
-	auto n2 = length(v2);
-	::testing::StaticAssertTypeEq<decltype(n2), double>();
-	
-	Vec2i v3(1, 1);
-	auto n3 = length(v3);
-	::testing::StaticAssertTypeEq<decltype(n3), double>();
+	EXPECT_EQ(normalize(Vec2f(1.0,1.0)),
+						Vec2f(0.7071067811865475, 0.7071067811865475));
+	EXPECT_FLOAT_EQ(length(normalize(Vec2f(1.0,1.0))), 1.0);
+	EXPECT_EQ(normalize(Vec2f(1,0)),Vec2f(1,0));
 }
