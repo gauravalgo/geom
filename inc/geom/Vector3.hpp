@@ -370,6 +370,20 @@ namespace geom {
 	}
 	
 	/**
+	 * \brief Calculate the cross product bewteen two vectors.
+	 * \arg \c lhs The \c Vector3 object on the left side of the cross product.
+	 * \arg \c rhs The \c Vector3 object on the right side of the cross product.
+	 * \return The \c Vector3 object which is the result of the cross product.
+	 */
+	template <typename RType, typename LType,
+						typename Result = typename VectorOpResult<LType,RType>::type>
+	Vector3<Result> cross(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return Vector3<Result>(lhs.y * rhs.z - lhs.z * rhs.y,
+													 lhs.z * rhs.x - lhs.x * rhs.z,
+													 lhs.x * rhs.y - lhs.y * rhs.x);
+	}
+	
+	/**
 	 * \brief Reflect the given vector around the given normal.
 	 * 
 	 * \given reflect(i,n), the reflection is calculated as
