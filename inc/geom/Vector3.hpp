@@ -30,6 +30,9 @@
 #define GEOM_VECTOR_3_HPP
 
 #include <cstdint>
+#include <cmath>
+
+#include "VectorTraits.hpp"
 
 namespace geom {
   /**
@@ -37,6 +40,8 @@ namespace geom {
    */
   template <typename Scalar>
   struct Vector3 {
+		typedef Scalar type;
+		
     /**
      * \brief Construct a \c Vector3 of 0 length
      * 
@@ -126,26 +131,6 @@ namespace geom {
 		}
 		
     /**
-     * \brief Assign the result of multiplying two vectors.
-     * \arg \c rhs The vector to multiply this \c Vector3 object by
-     * \return A reference to the \c Vector3 object being assigned to
-     */
-		template <typename RhsType>
-		Vector3<Scalar> & operator*=(const Vector3<RhsType> &rhs) {
-			return *this = *this * rhs;
-		}
-		
-    /**
-     * \brief Assign the result of dividing two vectors.
-     * \arg \c rhs The vector to divide this \c Vector3 object by
-     * \return A reference to the \c Vector3 object being assigned to
-     */
-		template <typename RhsType>
-		Vector3<Scalar> & operator/=(const Vector3<RhsType> &rhs) {
-			return *this = *this / rhs;
-		}
-		
-    /**
      * \brief Assign the result of scalar multiplication
      * \arg \c rhs The scalar to multiply this vector by.
      * \return A reference to the \c Vector3 object being assigned to
@@ -177,6 +162,76 @@ namespace geom {
   typedef Vector3<float> Vec3f;
   typedef Vector3<double> Vec3d;
   
+	/**
+	 * \breif Test vectors component-wise for equality.
+	 * \arg \c lhs The vector on the left of the equality operator.
+	 * \arg \c rhs The vector on the right of the equality operator.
+	 * \return True if all elements are equal, false otherwise.
+	 */
+	template <typename LType, typename RType>
+	bool operator==(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return (lhs.x == rhs.x && lhs.y == rhs.y && lhs.z == rhs.z);
+	}
+	
+	/**
+	 * \breif Test if two vectors are not equal.
+	 * \arg \c lhs The vector on the left of the inequality operator.
+	 * \arg \c rhs The vector on the right of the inequality operator.
+	 * \return True if any element is different, False otherwise.
+	 */
+	template <typename LType, typename RType>
+	bool operator!=(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return !(lhs == rhs);
+	}
+	
+	/**
+	 * \breif Test vectors component-wise for being less than.
+	 * \arg \c lhs The vector on the left of the less than operator.
+	 * \arg \c rhs The vector on the right of the less than operator.
+	 * \return True if all elements in lhs are smaller than the corresponding
+	 * element in rhs.
+	 */
+	template <typename LType, typename RType>
+	bool operator<(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return (lhs.x < rhs.x && lhs.y < rhs.y && lhs.z < rhs.z);
+	}
+	
+	/**
+	 * \brief Test vectors component-wise for being less than or equal.
+	 * \arg \c lhs The vector on the left of the less than or equal operator.
+	 * \arg \c rhs The vector on the right of the less than or equal operator.
+	 * \return True if all elements in lhs are smaller than or equal to the
+	 * corresponding element in rhs.
+	 */
+	template <typename LType, typename RType>
+	bool operator<=(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return (lhs.x <= rhs.x && lhs.y <= rhs.y && lhs.z <= rhs.z);
+	}
+	
+	/**
+	 * \brief Test vectors component-wise for being greater than.
+	 * \arg \c lhs The vector on the left of the greater than operator.
+	 * \arg \c rhs The vector on the right of the greater than operator.
+	 * \return True if all elements in lhs are larger than the corresponding
+	 * element in rhs.
+	 */
+	template <typename LType, typename RType>
+	bool operator>(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return (lhs.x > rhs.x && lhs.y > rhs.y && lhs.z > rhs.z);
+	}
+	
+	/**
+	 * \brief Test vectors component-wise for being greater than or equal.
+	 * \arg \c lhs The vector on the left of the greater than or equal operator.
+	 * \arg \c rhs The vector on the right of the greater than or equal operator.
+	 * \return True if all elements in lhs are larger than or equal to the
+	 * corresponding element in rhs.
+	 */
+	template <typename LType, typename RType>
+	bool operator>=(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return (lhs.x >= rhs.x && lhs.y >= rhs.y && lhs.z >= rhs.z);
+	}
+	
   /**
    * \brief Add two \c Vector3 objects together and return the result.
    * \arg \c lhs The operand on the left hand side of the expression
@@ -185,7 +240,7 @@ namespace geom {
    * rhs
    */
   template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector3<Result> operator+(const Vector3<LhsType> &lhs,
 														const Vector3<RhsType> &rhs)
   {
@@ -200,7 +255,7 @@ namespace geom {
    * rhs from lhs
    */
   template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector3<Result> operator-(const Vector3<LhsType> &lhs,
 														const Vector3<RhsType> &rhs)
   {
@@ -215,26 +270,11 @@ namespace geom {
 	 * lhs and rhs
    */
   template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector3<Result> operator*(const Vector3<LhsType> &lhs,
 														const Vector3<RhsType> &rhs)
   {
     return Vector3<Result>(lhs.x * rhs.x, lhs.y * rhs.y, lhs.z * rhs.z);
-  }
-	
-  /**
-   * \brief Divide two \c Vector3 objects together and return the result.
-   * \arg \c lhs The operand on the left hand side of the expression
-   * \arg \c rhs The operand on the right hand side of the expression
-   * \return A new \c Vector3 object that contains the result of dividing lhs
-	 * by rhs
-   */
-  template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
-  Vector3<Result> operator/(const Vector3<LhsType> &lhs,
-														const Vector3<RhsType> &rhs)
-  {
-    return Vector3<Result>(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z);
   }
 	
   /**
@@ -245,9 +285,11 @@ namespace geom {
 	 * lhs by rhs
    */
   template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector3<Result> operator*(const Vector3<LhsType> &lhs, const RhsType &rhs)
   {
+		static_assert(!IsVector<RhsType>::value,
+									"Multiplication is not defined for the given types");
     return Vector3<Result>(lhs.x * rhs, lhs.y * rhs, lhs.z * rhs);
   }
 	
@@ -259,10 +301,27 @@ namespace geom {
 	 * lhs by rhs
    */
   template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector3<Result> operator*(const LhsType &lhs, const Vector3<RhsType> &rhs)
   {
-    return Vector3<Result>(rhs.x * lhs, rhs.y * lhs, rhs.z * rhs);
+		static_assert(!IsVector<LhsType>::value,
+									"Multiplication is not defined for the given types");
+    return Vector3<Result>(rhs.x * lhs, rhs.y * lhs, rhs.z * lhs);
+  }
+	
+	/**
+   * \brief Divide two \c Vector3 objects together and return the result.
+   * \arg \c lhs The operand on the left hand side of the expression
+   * \arg \c rhs The operand on the right hand side of the expression
+   * \return A new \c Vector3 object that contains the result of dividing lhs
+	 * by rhs
+   */
+  template <typename RhsType, typename LhsType,
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
+  Vector3<Result> operator/(const Vector3<LhsType> &lhs,
+														const Vector3<RhsType> &rhs)
+  {
+    return Vector3<Result>(lhs.x / rhs.x, lhs.y / rhs.y, lhs.z / rhs.z);
   }
 	
 	/**
@@ -273,11 +332,92 @@ namespace geom {
 	 * by rhs
    */
   template <typename RhsType, typename LhsType,
-						typename Result = typename std::common_type<RhsType,LhsType>::type>
+						typename Result = typename VectorOpResult<RhsType,LhsType>::type>
   Vector3<Result> operator/(const Vector3<LhsType> &lhs, const RhsType &rhs)
   {
+		static_assert(!IsVector<RhsType>::value,
+									"Division is not defined for the given types");
     return Vector3<Result>(lhs.x / rhs, lhs.y / rhs, lhs.z / rhs);
   }
+	
+	/**
+	 * \brief Get the length of the vector.
+	 * 
+	 * Any type vector which isn't a float or double vector is first converted to
+	 * a double vector.
+	 * 
+	 * \arg \c v The vector to get the length of.
+	 * return The length of the vector.
+	 */
+	template <typename Scalar>
+	double length(const Vector3<Scalar> &v) {
+		return std::sqrt((double)(v.x * v.x + v.y * v.y + v.z * v.z));
+	}
+	inline float length(const Vector3<float> &f) {
+		return std::sqrt(f.x * f.x + f.y * f.y + f.z * f.z);
+	}
+	
+	/**
+	 * \brief Calculat the dot product between two vectors.
+	 * \arg \c lhs The \c Vector3 object on the left side of the dot operation.
+	 * \arg \c rhs The \c Vector3 object on the right side of the dot operation.
+	 * \return The result of the dot product of the two \c Vector3 objects.
+	 */
+	template <typename RType, typename LType,
+						typename Result = typename VectorOpResult<LType,RType>::type>
+	Result dot(const Vector3<LType> &lhs, const Vector3<RType> &rhs) {
+		return lhs.x * rhs.x + lhs.y * rhs.y + lhs.z * rhs.z;
+	}
+	
+	/**
+	 * \brief Reflect the given vector around the given normal.
+	 * 
+	 * \given reflect(i,n), the reflection is calculated as
+	 * \f$ i - 2 * (i \cdot n) * n \f$
+	 * 
+	 * It is important that the normal vector is normalized before this
+	 * operation.
+	 * 
+	 * \arg \c vec The vector to reflect.
+	 * \arg \c normal The normal vector of the surface reflecting the vector.
+	 * \return A new \c Vector3 object that is the reflection about the normal.
+	 */
+	template <typename RType, typename LType,
+						typename Result = typename VectorOpResult<LType,RType>::type>
+	Vector3<Result> reflect(const Vector3<LType> &vec,
+													const Vector3<RType> &normal)
+	{
+		return vec - ((2 * dot(vec, normal)) * normal);
+	}
+	
+	/**
+	 * \brief Normalize the \c Vector3 object.
+	 * 
+	 * The resulting vector will have a length of 1.0
+	 * 
+	 * The resulting vector defaults to type double unless the type of the input
+	 * vector is a float.
+	 * 
+	 * \arg \c vec The \c Vector3 object to normalize.
+	 * \return A new \c Vector3 object which is normalized.
+	 */
+	template <typename IntegralType, typename RType = double>
+	Vector3<RType> normalize(const Vector3<IntegralType> &source) {
+		return source / length(source);
+	}
+	inline Vector3<float> normalize(const Vector3<float> &source) {
+		return source / length(source);
+	}
+	
+	template <typename T>
+	struct IsVector<Vector3<T>> : public std::true_type { };
+	template <typename T>
+	struct IsVector3<Vector3<T>> : public std::true_type { };
+	
+	template <typename T>
+	struct VectorType<Vector3<T>> {
+		typedef T type;
+	};
 }
 
 #endif
