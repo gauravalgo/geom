@@ -81,6 +81,64 @@ TEST(Vector2, ConvertAssignment) {
 	EXPECT_VEC2(v4, static_cast<double>(v3.x), static_cast<double>(v3.y));
 }
 
+TEST(Vector2, Equality) {
+	EXPECT_TRUE(Vec2i(1,1) == Vec2i(1,1));
+	EXPECT_TRUE(Vec2i(1,2) == Vec2i(1,2));
+	EXPECT_TRUE(Vec2i(2,1) == Vec2i(2,1));
+	EXPECT_FALSE(Vec2i(1,1) == Vec2i(2,1));
+	EXPECT_FALSE(Vec2i(1,1) == Vec2i(1,2));
+	EXPECT_FALSE(Vec2i(1,1) == Vec2i(2,2));
+}
+
+TEST(Vector2, Inequality) {
+	EXPECT_FALSE(Vec2i(1,1) != Vec2i(1,1));
+	EXPECT_FALSE(Vec2i(1,2) != Vec2i(1,2));
+	EXPECT_FALSE(Vec2i(2,1) != Vec2i(2,1));
+	EXPECT_TRUE(Vec2i(1,1) != Vec2i(2,1));
+	EXPECT_TRUE(Vec2i(1,1) != Vec2i(1,2));
+	EXPECT_TRUE(Vec2i(1,1) != Vec2i(2,2));
+}
+
+TEST(Vector2, LessThan) {
+	EXPECT_TRUE(Vec2i(1,1) < Vec2i(2,2));
+	EXPECT_FALSE(Vec2i(1,1) < Vec2i(1,2));
+	EXPECT_FALSE(Vec2i(1,1) < Vec2i(2,1));
+	EXPECT_FALSE(Vec2i(1,1) < Vec2i(1,1));
+	EXPECT_FALSE(Vec2i(1,1) < Vec2i(2,0));
+	EXPECT_FALSE(Vec2i(1,1) < Vec2i(0,2));
+	EXPECT_FALSE(Vec2i(1,1) < Vec2i(0,0));
+}
+
+TEST(Vector2, LessEq) {
+	EXPECT_TRUE(Vec2i(1,1) <= Vec2i(2,2));
+	EXPECT_TRUE(Vec2i(1,1) <= Vec2i(1,2));
+	EXPECT_TRUE(Vec2i(1,1) <= Vec2i(2,1));
+	EXPECT_TRUE(Vec2i(1,1) <= Vec2i(1,1));
+	EXPECT_FALSE(Vec2i(1,1) <= Vec2i(1,0));
+	EXPECT_FALSE(Vec2i(1,1) <= Vec2i(0,1));
+	EXPECT_FALSE(Vec2i(1,1) <= Vec2i(0,0));
+}
+
+TEST(Vector2, GreaterThan) {
+	EXPECT_TRUE(Vec2i(1,1) > Vec2i(0,0));
+	EXPECT_FALSE(Vec2i(1,1) > Vec2i(1,0));
+	EXPECT_FALSE(Vec2i(1,1) > Vec2i(0,1));
+	EXPECT_FALSE(Vec2i(1,1) > Vec2i(1,1));
+	EXPECT_FALSE(Vec2i(1,1) > Vec2i(2,0));
+	EXPECT_FALSE(Vec2i(1,1) > Vec2i(0,2));
+	EXPECT_FALSE(Vec2i(1,1) > Vec2i(2,2));
+}
+
+TEST(Vector2, GreaterEq) {
+	EXPECT_TRUE(Vec2i(1,1) >= Vec2i(0,0));
+	EXPECT_TRUE(Vec2i(1,1) >= Vec2i(1,0));
+	EXPECT_TRUE(Vec2i(1,1) >= Vec2i(0,1));
+	EXPECT_TRUE(Vec2i(1,1) >= Vec2i(1,1));
+	EXPECT_FALSE(Vec2i(1,1) >= Vec2i(2,0));
+	EXPECT_FALSE(Vec2i(1,1) >= Vec2i(0,2));
+	EXPECT_FALSE(Vec2i(1,1) >= Vec2i(2,2));
+}
+
 TEST(Vector2, Negation) {
   Vec2i v1(1,2);
 	Vec2i v2 = -v1;
