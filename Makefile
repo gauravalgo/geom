@@ -24,6 +24,7 @@ GTEST_LIBS := -lgtest -lgtest_main -lpthread
 TEST_OBJECTS := $(patsubst %.cpp,%.o,$(wildcard ${TESTS}/*.cpp))
 
 .PHONEY: all tests clean documentation install user-install doinstall link copy
+.PHONEY: run
 
 all: tests
 tests: test
@@ -31,6 +32,9 @@ clean:
 	rm -rf ${TESTS}/*.o
 	rm -rf ./test
 	rm -rf ./html/ ./latex
+
+run:
+	./test --gtest_print_time=0
 
 link:
 	$(eval INSTALL_PROGRAM=ln -s)
