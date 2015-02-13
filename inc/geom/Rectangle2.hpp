@@ -28,6 +28,13 @@ namespace geom {
 		Point2<Scalar> origin;
 		Dimensions2<Scalar> dim;
 	};
+	
+	typedef Rectangle2<float> Rectangle2f;
+	typedef Rectangle2<double> Rectangle2d;
+	typedef Rectangle2<int32_t> Rectangle2i;
+	typedef Rectangle2<uint32_t> Rectangle2u;
+	typedef Rectangle2<int64_t> Rectangle2l;
+	typedef Rectangle2<uint64_t> Rectangle2ul;
 }
 
 #endif
